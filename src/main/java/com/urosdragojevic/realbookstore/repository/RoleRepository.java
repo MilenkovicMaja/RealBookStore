@@ -1,5 +1,6 @@
 package com.urosdragojevic.realbookstore.repository;
 
+import com.urosdragojevic.realbookstore.audit.AuditLogger;
 import com.urosdragojevic.realbookstore.domain.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ import java.util.List;
 public class RoleRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(RoleRepository.class);
+
+    private static final AuditLogger auditLogger = AuditLogger.getAuditLogger(RoleRepository.class);
 
     private final DataSource dataSource;
 
@@ -37,6 +40,7 @@ public class RoleRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            LOG.error("Failed to retrieve roles for user with ID: " + userId);
         }
         return roles;
     }
